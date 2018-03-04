@@ -1,9 +1,12 @@
 package ua.kpi.cad.linguisticvar.domain;
 
-import fuzzy4j.sets.TriangularFunction;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
 public class LinguisticVariable {
     private String name;
     private List<Term> terms;
