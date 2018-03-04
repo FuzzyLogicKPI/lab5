@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -82,12 +83,33 @@ public class MainSceneController implements Initializable {
     private LinguisticVariable parseLinguisticVariable() {
         String name = this.name.getText() != null ? this.name.getText() : "default";
 
-        Integer leftBoundary = Integer.valueOf(this.leftBoundary.getText());
-        Integer rightBoundary = Integer.valueOf(this.rightBoundary.getText());
+        try {
+            Integer leftBoundary = Integer.valueOf(this.leftBoundary.getText());
+            Integer rightBoundary = Integer.valueOf(this.rightBoundary.getText());
 
-        String[] termNames = terms.getText().split(";");
+            if (leftBoundary > rightBoundary) {
+                Alert alert = getWarningAlert("Left boundary couldn't be greater than right boundary.", "Please, check your inputs.");
+                alert.showAndWait();
+                throw new IllegalArgumentException();
+            }
+
+        } catch (NumberFormatException e) {
+            Alert alert = getWarningAlert("Wrong number format.", "Please, check boundaries number format. " + e.getMessage());
+            alert.showAndWait();
+        }
+
+        String[] termNames = terms.getText().split("\n");
 
         // create linguistic var..
         return null;
+    }
+
+    private Alert getWarningAlert(String headerMsg, String contentMsg) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(headerMsg);
+        alert.setHeaderText(headerMsg);
+        alert.setContentText(contentMsg);
+
+        return alert;
     }
 }
