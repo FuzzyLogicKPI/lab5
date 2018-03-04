@@ -6,5 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class FuzzySet {
-    float[] membershipFunctionValues;
+    private double[] membershipFunctionValues;
 }

@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Interval {
-    private float leftBoundary;
-    private float rightBoundary;
+    private double leftBoundary;
+    private double rightBoundary;
 }
