@@ -7,7 +7,6 @@ import ua.kpi.cad.linguisticvar.domain.term.Term;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
 @Getter
 public class LinguisticVariable {
     private String name;

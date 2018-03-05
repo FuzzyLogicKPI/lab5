@@ -9,18 +9,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class LinguisticVariableFactory {
-
+public class LinguisticVariableCreator {
     @Inject
-    private static TermBuilder termBuilder;
+    private TermBuilder termBuilder;
 
-    public static LinguisticVariable create(String name, List<String> termNames,
+    public LinguisticVariableCreator() {}
+
+    public LinguisticVariable create(String name, List<String> termNames,
                                             double leftBoundary, double rightBoundary) {
         List<Term> terms = createTerms(termNames);
         return new LinguisticVariable(name, terms, new Interval(leftBoundary, rightBoundary));
     }
 
-    private static List<Term> createTerms(List<String> termNames) {
+    private List<Term> createTerms(List<String> termNames) {
         int totalNumberOfTerms = termNames.size();
         return IntStream.range(0, totalNumberOfTerms)
                 .mapToObj(
@@ -29,7 +30,7 @@ public class LinguisticVariableFactory {
                 .collect(Collectors.toList());
     }
 
-    private static Term buildTerm(int indexOfTerm, int totalNumberOfTerms, String termName) {
+    private Term buildTerm(int indexOfTerm, int totalNumberOfTerms, String termName) {
         return termBuilder.buildTerm(new TermInfo(termName, indexOfTerm, totalNumberOfTerms));
     }
 }
