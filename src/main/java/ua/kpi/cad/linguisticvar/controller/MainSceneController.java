@@ -8,16 +8,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ua.kpi.cad.linguisticvar.domain.FuzzySet;
+import ua.kpi.cad.linguisticvar.domain.Interval;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
+import ua.kpi.cad.linguisticvar.domain.Term;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainSceneController implements Initializable {
     private static final String CALCULATION_SCENE_FXML = "/templates/calculation-scene.fxml";
@@ -58,10 +63,14 @@ public class MainSceneController implements Initializable {
         xAxis.setUpperBound(var.getInterval().getRightBoundary());
         xAxis.setAutoRanging(false);
 
-        // get values from var.mf ??
-        // put it to axis..
+        List<Term> terms = var.getTerms();
+        List<XYChart.Series<Number, Number>> chartsData = terms.stream()
+                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
+                .collect(Collectors.toList());
 
-        // ...
+        for (XYChart.Series<Number, Number> series : chartsData) {
+            memberShipFuncVisualization.getData().add(series);
+        }
     }
 
     @FXML
@@ -90,18 +99,46 @@ public class MainSceneController implements Initializable {
             if (leftBoundary > rightBoundary) {
                 Alert alert = getWarningAlert("Left boundary couldn't be greater than right boundary.", "Please, check your inputs.");
                 alert.showAndWait();
-                throw new IllegalArgumentException();
+
+                throw new IllegalArgumentException("Left boundary couldn't be greater than right boundary.");
             }
+
+
+            Interval interval = new Interval(leftBoundary, rightBoundary);
+            String[] termNames = terms.getText().split("\n");
+
+            // create linguistic var..
+            return new LinguisticVariable(name, mockTerms(termNames), interval);
 
         } catch (NumberFormatException e) {
             Alert alert = getWarningAlert("Wrong number format.", "Please, check boundaries number format. " + e.getMessage());
             alert.showAndWait();
+            return null;
+        }
+    }
+
+    private XYChart.Series<Number, Number> convertMFValuesToChartSeries(double[] mfValues, Interval interval) {
+        double step = (interval.getRightBoundary() - interval.getLeftBoundary()) / mfValues.length;
+
+        List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
+        int counter = 0;
+        for (double i = interval.getLeftBoundary(); i < interval.getRightBoundary(); i+=step) {
+            chartData.add(new XYChart.Data<>(i, mfValues[counter++]));
         }
 
-        String[] termNames = terms.getText().split("\n");
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.getData().addAll(chartData);
 
-        // create linguistic var..
-        return null;
+        return series;
+    }
+
+    private List<Term> mockTerms(String[] names) {
+        return Arrays.stream(names)
+                .map(name -> {
+                    double[] random = new Random().doubles(10, 10, 80).toArray();
+                    return new Term(name, new FuzzySet(random));
+                })
+                .collect(Collectors.toList());
     }
 
     private Alert getWarningAlert(String headerMsg, String contentMsg) {

@@ -11,5 +11,4 @@ public class LinguisticVariable {
     private String name;
     private List<Term> terms;
     private Interval interval;
-
 }
