@@ -21,7 +21,7 @@ public class LinguisticVariable {
         this.name = name;
         this.terms = terms;
 
-        terms.stream().forEach(term -> termsRegistry.add(term.getName()));
+        terms.forEach(term -> termsRegistry.add(term.getName()));
     }
 
     public boolean isTermPresent(String termName) {
