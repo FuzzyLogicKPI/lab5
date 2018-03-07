@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 import ua.kpi.cad.linguisticvar.domain.Interval;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
-import ua.kpi.cad.linguisticvar.domain.Term;
+import ua.kpi.cad.linguisticvar.domain.term.Term;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,18 +59,18 @@ public class MainSceneController implements Initializable {
     protected void calculateMembershipFunc(ActionEvent event) {
         LinguisticVariable var = parseLinguisticVariable();
 
-        xAxis.setLowerBound(var.getInterval().getLeftBoundary());
-        xAxis.setUpperBound(var.getInterval().getRightBoundary());
-        xAxis.setAutoRanging(false);
-
-        List<Term> terms = var.getTerms();
-        List<XYChart.Series<Number, Number>> chartsData = terms.stream()
-                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
-                .collect(Collectors.toList());
-
-        for (XYChart.Series<Number, Number> series : chartsData) {
-            memberShipFuncVisualization.getData().add(series);
-        }
+//        xAxis.setLowerBound(var.getInterval().getLeftBoundary());
+//        xAxis.setUpperBound(var.getInterval().getRightBoundary());
+//        xAxis.setAutoRanging(false);
+//
+//        List<Term> terms = var.getTerms();
+//        List<XYChart.Series<Number, Number>> chartsData = terms.stream()
+//                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
+//                .collect(Collectors.toList());
+//
+//        for (XYChart.Series<Number, Number> series : chartsData) {
+//            memberShipFuncVisualization.getData().add(series);
+//        }
     }
 
     @FXML
