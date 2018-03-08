@@ -12,9 +12,11 @@ public class FuzzyStatementResolverImpl implements FuzzyStatementResolver {
 
     @Override
     public FuzzySet resolveStatementForVariable(String statement, LinguisticVariable linguisticVariable) {
-        //parse statement to get operands
-        //parse statement to get function which will be applied to operands
+        ParsedStatement parsedStatement = statementParser.parseString(statement);
+        return calculateResultForParsedStatement(parsedStatement);
+    }
 
-        return null;
+    private FuzzySet calculateResultForParsedStatement(ParsedStatement statement) {
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }
