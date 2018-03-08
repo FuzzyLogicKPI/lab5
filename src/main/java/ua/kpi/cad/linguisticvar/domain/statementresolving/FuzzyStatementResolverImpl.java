@@ -1,7 +1,6 @@
 package ua.kpi.cad.linguisticvar.domain.statementresolving;
 
 import com.google.inject.Inject;
-import lombok.Setter;
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 
