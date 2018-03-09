@@ -1,7 +1,7 @@
 package ua.kpi.cad.linguisticvar.domain.statementresolving;
 
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
-import ua.kpi.cad.linguisticvar.domain.operators.Operator;
+import ua.kpi.cad.linguisticvar.domain.operator.Operator;
 
 import java.util.List;
 

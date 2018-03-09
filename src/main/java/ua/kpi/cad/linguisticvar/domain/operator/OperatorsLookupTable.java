@@ -1,4 +1,4 @@
-package ua.kpi.cad.linguisticvar.domain.operators;
+package ua.kpi.cad.linguisticvar.domain.operator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +23,7 @@ public class OperatorsLookupTable {
     public static Operator lookup(String stringRepresentationOfOperator) {
         String lowercaseName = stringRepresentationOfOperator.toLowerCase();
         checkForExistence(lowercaseName);
+
         return lookupTable.get(lowercaseName);
     }
 

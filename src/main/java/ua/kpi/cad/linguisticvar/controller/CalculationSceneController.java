@@ -1,6 +1,7 @@
 package ua.kpi.cad.linguisticvar.controller;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +40,7 @@ public class CalculationSceneController extends AbstractController implements In
 
     private LinguisticVariable variable;
 
-    // TODO: inject
+    @Inject
     private FuzzyStatementResolver resolver;
 
     @Override

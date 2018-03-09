@@ -1,8 +1,8 @@
-package ua.kpi.cad.linguisticvar.domain.operators;
+package ua.kpi.cad.linguisticvar.domain.operator;
 
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 
-public class SlightlyOperator extends Operator {
+public class VeryOperator extends Operator {
     {
         this.PRIORITY = 3;
     }

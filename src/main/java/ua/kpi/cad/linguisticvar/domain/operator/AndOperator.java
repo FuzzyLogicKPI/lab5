@@ -1,10 +1,10 @@
-package ua.kpi.cad.linguisticvar.domain.operators;
+package ua.kpi.cad.linguisticvar.domain.operator;
 
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 
-public class NotOperator extends Operator {
+public class AndOperator extends Operator {
     {
-        this.PRIORITY = 2;
+        this.PRIORITY = 1;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ua.kpi.cad.linguisticvar.domain.operators;
+package ua.kpi.cad.linguisticvar.domain.operator;
 
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 

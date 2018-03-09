@@ -1,12 +1,9 @@
 package ua.kpi.cad.linguisticvar.domain;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import ua.kpi.cad.linguisticvar.diconfig.AppModule;
 import ua.kpi.cad.linguisticvar.diconfig.ApplicationClassesFactory;
 import ua.kpi.cad.linguisticvar.domain.term.TermBuilder;
 
