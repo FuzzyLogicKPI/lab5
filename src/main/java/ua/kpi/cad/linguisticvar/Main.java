@@ -14,6 +14,7 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) throws Exception {
+//        Injector injector = Guice.createInjector(new BasicModule());
         FXMLLoader fxmlLoader = new FXMLLoader();
 
         Parent root = fxmlLoader.load(getClass().getResourceAsStream(ROOT_FXML_FILE));

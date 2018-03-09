@@ -1,14 +1,20 @@
 package ua.kpi.cad.linguisticvar.controller;
 
+import com.google.common.eventbus.Subscribe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 
-public class CalculationSceneController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class CalculationSceneController implements Initializable {
 
     @FXML
     private TextField statement;
@@ -25,8 +31,20 @@ public class CalculationSceneController {
     @FXML
     private NumberAxis yAxis;
 
+    private LinguisticVariable variable;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    @Subscribe
+    public void setLinguisticVariable(LinguisticVariable variable) {
+        this.variable = variable;
+    }
+
     @FXML
     protected void executeOperator(ActionEvent event) {
+        System.out.println(variable);
         // parse statement
         // calculate new fuzzy set
         // display fuzzy set

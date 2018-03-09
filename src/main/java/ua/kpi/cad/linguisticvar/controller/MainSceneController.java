@@ -1,5 +1,8 @@
 package ua.kpi.cad.linguisticvar.controller;
 
+import com.google.common.eventbus.EventBus;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +17,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ua.kpi.cad.linguisticvar.domain.FuzzySet;
+import lombok.Getter;
 import ua.kpi.cad.linguisticvar.domain.Interval;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 import ua.kpi.cad.linguisticvar.domain.term.Term;
+import ua.kpi.cad.linguisticvar.domain.term.TermBuilder;
+import ua.kpi.cad.linguisticvar.domain.term.TermInfo;
+import ua.kpi.cad.linguisticvar.domain.term.TriangularMembershipFunctionTermBuilder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +54,13 @@ public class MainSceneController implements Initializable {
     @FXML
     private NumberAxis yAxis;
 
+    @Getter
+    private LinguisticVariable variable;
+
+    // TODO: should be injected.
+    private EventBus eventBus = new EventBus();
+
+    // TODO: next btn should be hidden while var is not calculated.
     public void initialize(URL location, ResourceBundle resources) {
         yAxis.setUpperBound(1);
         yAxis.setLowerBound(0);
@@ -55,22 +68,27 @@ public class MainSceneController implements Initializable {
         yAxis.setAutoRanging(false);
     }
 
+    // TODO: set styles for a line chart.
     @FXML
     protected void calculateMembershipFunc(ActionEvent event) {
         LinguisticVariable var = parseLinguisticVariable();
+        this.variable = var;
 
-//        xAxis.setLowerBound(var.getInterval().getLeftBoundary());
-//        xAxis.setUpperBound(var.getInterval().getRightBoundary());
-//        xAxis.setAutoRanging(false);
-//
-//        List<Term> terms = var.getTerms();
-//        List<XYChart.Series<Number, Number>> chartsData = terms.stream()
-//                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
-//                .collect(Collectors.toList());
-//
-//        for (XYChart.Series<Number, Number> series : chartsData) {
-//            memberShipFuncVisualization.getData().add(series);
-//        }
+        xAxis.setLowerBound(var.getInterval().getLeftBoundary());
+        xAxis.setUpperBound(var.getInterval().getRightBoundary());
+        xAxis.setAutoRanging(false);
+
+        List<Term> terms = var.getTerms();
+        List<XYChart.Series<Number, Number>> chartsData = terms.stream()
+                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
+                .collect(Collectors.toList());
+
+
+        ObservableList<XYChart.Series<Number, Number>> data = FXCollections.observableArrayList();
+        for (XYChart.Series<Number, Number> series : chartsData) {
+            data.add(series);
+        }
+        memberShipFuncVisualization.setData(data);
     }
 
     @FXML
@@ -79,6 +97,8 @@ public class MainSceneController implements Initializable {
 
         try {
             Parent parent = loader.load(getClass().getResourceAsStream(CALCULATION_SCENE_FXML));
+            eventBus.register(loader.getController());
+            eventBus.post(variable);
 
             Scene scene = new Scene(parent);
             Stage stage = ((Stage) ((Button) event.getSource()).getScene().getWindow());
@@ -107,8 +127,14 @@ public class MainSceneController implements Initializable {
             Interval interval = new Interval(leftBoundary, rightBoundary);
             String[] termNames = terms.getText().split("\n");
 
-            // create linguistic var..
-            return new LinguisticVariable(name, mockTerms(termNames), interval);
+            TermBuilder termBuilder = new TriangularMembershipFunctionTermBuilder(); // TODO: better to inject
+
+            List<Term> terms = new ArrayList<>();
+            for (int i = 0; i < termNames.length; i++) {
+                terms.add(termBuilder.buildTerm(new TermInfo(termNames[i], i, termNames.length)));
+            }
+
+            return new LinguisticVariable(name, terms, interval);
 
         } catch (NumberFormatException e) {
             Alert alert = getWarningAlert("Wrong number format.", "Please, check boundaries number format. " + e.getMessage());
@@ -122,7 +148,7 @@ public class MainSceneController implements Initializable {
 
         List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
         int counter = 0;
-        for (double i = interval.getLeftBoundary(); i < interval.getRightBoundary(); i+=step) {
+        for (double i = interval.getLeftBoundary(); i < interval.getRightBoundary() - step; i += step) {
             chartData.add(new XYChart.Data<>(i, mfValues[counter++]));
         }
 
@@ -130,15 +156,6 @@ public class MainSceneController implements Initializable {
         series.getData().addAll(chartData);
 
         return series;
-    }
-
-    private List<Term> mockTerms(String[] names) {
-        return Arrays.stream(names)
-                .map(name -> {
-                    double[] random = new Random().doubles(10, 10, 80).toArray();
-                    return new Term(name, new FuzzySet(random));
-                })
-                .collect(Collectors.toList());
     }
 
     private Alert getWarningAlert(String headerMsg, String contentMsg) {

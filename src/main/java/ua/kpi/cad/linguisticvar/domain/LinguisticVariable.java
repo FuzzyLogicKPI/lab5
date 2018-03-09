@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ua.kpi.cad.linguisticvar.domain.term.Term;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class LinguisticVariable {
         this.interval = interval;
         this.name = name;
         this.terms = terms;
+        this.termsRegistry = new HashSet<>();
 
         terms.forEach(term -> termsRegistry.add(term.getName()));
     }
