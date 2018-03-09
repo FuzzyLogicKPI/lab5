@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MainSceneController implements Initializable {
+public class MainSceneController extends AbstractController implements Initializable {
     private static final String CALCULATION_SCENE_FXML = "/templates/calculation-scene.fxml";
 
     @FXML
@@ -85,9 +85,8 @@ public class MainSceneController implements Initializable {
 
 
         ObservableList<XYChart.Series<Number, Number>> data = FXCollections.observableArrayList();
-        for (XYChart.Series<Number, Number> series : chartsData) {
-            data.add(series);
-        }
+        data.addAll(chartsData);
+
         memberShipFuncVisualization.setData(data);
     }
 
@@ -141,21 +140,6 @@ public class MainSceneController implements Initializable {
             alert.showAndWait();
             return null;
         }
-    }
-
-    private XYChart.Series<Number, Number> convertMFValuesToChartSeries(double[] mfValues, Interval interval) {
-        double step = (interval.getRightBoundary() - interval.getLeftBoundary()) / mfValues.length;
-
-        List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
-        int counter = 0;
-        for (double i = interval.getLeftBoundary(); i < interval.getRightBoundary() - step; i += step) {
-            chartData.add(new XYChart.Data<>(i, mfValues[counter++]));
-        }
-
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.getData().addAll(chartData);
-
-        return series;
     }
 
     private Alert getWarningAlert(String headerMsg, String contentMsg) {

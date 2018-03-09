@@ -22,11 +22,11 @@ public class OperatorsLookupTable {
 
     public static Operator lookup(String stringRepresentationOfOperator) {
         String lowercaseName = stringRepresentationOfOperator.toLowerCase();
-        checkForExistance(lowercaseName);
+        checkForExistence(lowercaseName);
         return lookupTable.get(lowercaseName);
     }
 
-    private static void checkForExistance(String operation) {
+    private static void checkForExistence(String operation) {
         if (!lookupTable.containsKey(operation)) {
             throw new NotExistingOperationException(operation + " does not exist.");
         }

@@ -4,6 +4,5 @@ import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 
 public interface FuzzyStatementResolver {
-    FuzzySet resolveStatementForVariable(String fuzzyStatement,
-                                         LinguisticVariable linguisticVariable);
+    FuzzySet resolveStatementForVariable(String fuzzyStatement, LinguisticVariable linguisticVariable);
 }
