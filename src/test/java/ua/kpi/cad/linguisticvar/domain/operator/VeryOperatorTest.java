@@ -1,6 +1,7 @@
 package ua.kpi.cad.linguisticvar.domain.operator;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -10,9 +11,16 @@ import ua.kpi.cad.linguisticvar.domain.FuzzySet;
 @RunWith(JUnit4.class)
 public class VeryOperatorTest {
 
+    private DefaultOperatorsLookupTable lookupTable;
+
+    @Before
+    public void init() {
+        lookupTable = new DefaultOperatorsLookupTable();
+    }
+
     @Test
     public void testVeryOperator() {
-        Operator operator = OperatorsLookupTable.lookup("очень");
+        Operator operator = lookupTable.lookup("очень");
 
         FuzzySet fuzzySet = new FuzzySet(new double[]{0.4, 1.0, 0.3, 0.7, 0.2, 0.0, 0.1, 1.0, 0.3, 0.2});
 

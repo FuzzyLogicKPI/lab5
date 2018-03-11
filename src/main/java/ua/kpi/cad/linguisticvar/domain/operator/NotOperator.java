@@ -11,7 +11,7 @@ public class NotOperator extends Operator {
 
     @Override
     public FuzzySet applyTo(FuzzySet... operands) {
-        validate();
+        validate(operands);
 
         FuzzySet fuzzySet = operands[0];
 
@@ -27,5 +27,15 @@ public class NotOperator extends Operator {
         if (operands.length != 1) {
             throw new IllegalArgumentException("Not operator could be applied only for single fuzzy set.");
         }
+    }
+
+    @Override
+    public boolean isUnary() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "!";
     }
 }

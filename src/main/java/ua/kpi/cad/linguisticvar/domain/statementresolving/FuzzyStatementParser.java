@@ -1,5 +1,7 @@
 package ua.kpi.cad.linguisticvar.domain.statementresolving;
 
+import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
+
 public interface FuzzyStatementParser {
-    ParsedStatement parseString(String statement);
+    ParsedStatement parseForVariable(String statement, LinguisticVariable variable);
 }

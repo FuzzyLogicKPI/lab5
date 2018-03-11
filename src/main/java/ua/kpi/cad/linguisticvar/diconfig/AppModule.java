@@ -1,6 +1,8 @@
 package ua.kpi.cad.linguisticvar.diconfig;
 
 import com.google.inject.AbstractModule;
+import ua.kpi.cad.linguisticvar.domain.operator.DefaultOperatorsLookupTable;
+import ua.kpi.cad.linguisticvar.domain.operator.OperatorsLookup;
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementParser;
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementParserImpl;
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementResolver;
@@ -12,6 +14,7 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(TermBuilder.class).to(TriangularMembershipFunctionTermBuilder.class);
+        bind(OperatorsLookup.class).to(DefaultOperatorsLookupTable.class);
         bind(FuzzyStatementParser.class).to(FuzzyStatementParserImpl.class);
         bind(FuzzyStatementResolver.class).to(FuzzyStatementResolverImpl.class);
     }

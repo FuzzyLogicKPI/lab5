@@ -1,31 +1,49 @@
 package ua.kpi.cad.linguisticvar.domain.statementresolving;
 
-import ua.kpi.cad.linguisticvar.domain.FuzzySet;
-import ua.kpi.cad.linguisticvar.domain.operator.Operator;
-
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ParsedStatement {
     private List<StatementUnit> statement;
+    private Iterator<StatementUnit> iterator;
+    private boolean isFirstCall;
 
-    public void addOperator(Operator operator) {
-        statement.add(new StatementUnit(operator));
+    public ParsedStatement() {
+        statement = new LinkedList<>();
+        isFirstCall = true;
     }
 
-    public void addOperand(FuzzySet operand) {
-        statement.add(new StatementUnit(operand));
+    public void add(StatementUnit unit) {
+        statement.add(unit);
     }
 
-    private static class StatementUnit {
-        private FuzzySet operand;
-        private Operator operator;
+    public boolean hasNext() {
+        initializeIteratorIfFirstCall();
+        return iterator.hasNext();
+    }
 
-        private StatementUnit(Object unit) {
-            if (unit instanceof FuzzySet) {
-                operand = (FuzzySet) unit;
-            } else {
-                operator = (Operator) unit;
-            }
+    /**
+     * @throws EmptyStatementException if there are no more elements left
+     * @return next StatementUnit object of parsed statement
+     */
+    public StatementUnit getNextUnit() {
+        initializeIteratorIfFirstCall();
+        return nextOrThrow();
+    }
+
+    private StatementUnit nextOrThrow() {
+        if (iterator.hasNext()) {
+            return iterator.next();
+        } else {
+            throw new EmptyStatementException("No more elements");
+        }
+    }
+
+    private void initializeIteratorIfFirstCall() {
+        if (isFirstCall) {
+            iterator = statement.iterator();
+            isFirstCall = false;
         }
     }
 }

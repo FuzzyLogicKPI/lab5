@@ -18,12 +18,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.Getter;
-import ua.kpi.cad.linguisticvar.domain.Interval;
+import ua.kpi.cad.linguisticvar.diconfig.ApplicationClassesFactory;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
+import ua.kpi.cad.linguisticvar.domain.LinguisticVariableCreator;
 import ua.kpi.cad.linguisticvar.domain.term.Term;
-import ua.kpi.cad.linguisticvar.domain.term.TermBuilder;
-import ua.kpi.cad.linguisticvar.domain.term.TermInfo;
-import ua.kpi.cad.linguisticvar.domain.term.TriangularMembershipFunctionTermBuilder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,6 +57,8 @@ public class MainSceneController extends AbstractController implements Initializ
 
     // TODO: should be injected.
     private EventBus eventBus = new EventBus();
+
+    private LinguisticVariableCreator factory = ApplicationClassesFactory.getLinguisticVariableCreator();
 
     // TODO: next btn should be hidden while var is not calculated.
     public void initialize(URL location, ResourceBundle resources) {
@@ -122,18 +122,9 @@ public class MainSceneController extends AbstractController implements Initializ
                 throw new IllegalArgumentException("Left boundary couldn't be greater than right boundary.");
             }
 
-
-            Interval interval = new Interval(leftBoundary, rightBoundary);
             String[] termNames = terms.getText().split("\n");
 
-            TermBuilder termBuilder = new TriangularMembershipFunctionTermBuilder(); // TODO: better to inject
-
-            List<Term> terms = new ArrayList<>();
-            for (int i = 0; i < termNames.length; i++) {
-                terms.add(termBuilder.buildTerm(new TermInfo(termNames[i], i, termNames.length)));
-            }
-
-            return new LinguisticVariable(name, terms, interval);
+            return factory.create(name, Arrays.asList(termNames), leftBoundary, rightBoundary);
 
         } catch (NumberFormatException e) {
             Alert alert = getWarningAlert("Wrong number format.", "Please, check boundaries number format. " + e.getMessage());

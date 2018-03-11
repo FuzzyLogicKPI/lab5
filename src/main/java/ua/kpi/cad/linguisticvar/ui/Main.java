@@ -1,4 +1,4 @@
-package ua.kpi.cad.linguisticvar;
+package ua.kpi.cad.linguisticvar.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

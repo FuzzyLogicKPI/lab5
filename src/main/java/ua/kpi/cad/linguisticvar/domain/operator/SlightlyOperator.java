@@ -28,4 +28,14 @@ public class SlightlyOperator extends Operator {
             throw new IllegalArgumentException("Not operator could be applied only for single fuzzy set.");
         }
     }
+
+    @Override
+    public boolean isUnary() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "~";
+    }
 }

@@ -32,4 +32,14 @@ public class AndOperator extends Operator {
             throw new IllegalArgumentException("Wrong lengths of mf-values.");
         }
     }
+
+    @Override
+    public boolean isUnary() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "&";
+    }
 }
