@@ -6,11 +6,21 @@ import java.util.List;
 
 public class OrOperator extends Operator {
     {
-        this.PRIORITY = 2;
+        this.PRIORITY = 1;
     }
 
     @Override
     public FuzzySet applyTo(List<FuzzySet> operands) {
         throw new UnsupportedOperationException("Not implemented yet.");
+    }
+
+    @Override
+    public boolean isUnary() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "|";
     }
 }

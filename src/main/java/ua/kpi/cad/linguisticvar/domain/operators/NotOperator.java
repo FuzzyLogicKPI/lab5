@@ -13,4 +13,14 @@ public class NotOperator extends Operator {
     public FuzzySet applyTo(List<FuzzySet> operands) {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
+
+    @Override
+    public boolean isUnary() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "!";
+    }
 }

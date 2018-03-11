@@ -2,17 +2,20 @@ package ua.kpi.cad.linguisticvar.domain.operators;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-public class OperatorsLookupTable {
+public class DefaultOperatorsLookupTable implements OperatorsLookup {
     private static final String SLIGHTLY = "слегка";
     private static final String VERY = "очень";
     private static final String NOT = "не";
     private static final String OR = "или";
     private static final String AND = "и";
 
-    private static Map<String, Operator> lookupTable = new HashMap<>();
+    private Map<String, Operator> lookupTable;
 
-    static {
+    public DefaultOperatorsLookupTable() {
+        lookupTable = new HashMap<>();
+
         lookupTable.put(SLIGHTLY, new SlightlyOperator());
         lookupTable.put(VERY, new VeryOperator());
         lookupTable.put(NOT, new NotOperator());
@@ -20,13 +23,17 @@ public class OperatorsLookupTable {
         lookupTable.put(OR, new OrOperator());
     }
 
-    public static Operator lookup(String stringRepresentationOfOperator) {
-        String lowercaseName = stringRepresentationOfOperator.toLowerCase();
+    public Set<String> getAllOperationNames() {
+        return lookupTable.keySet();
+    }
+
+    public Operator lookup(String operatorName) {
+        String lowercaseName = operatorName.toLowerCase();
         checkForExistance(lowercaseName);
         return lookupTable.get(lowercaseName);
     }
 
-    private static void checkForExistance(String operation) {
+    private void checkForExistance(String operation) {
         if (!lookupTable.containsKey(operation)) {
             throw new NotExistingOperationException(operation + " does not exist.");
         }

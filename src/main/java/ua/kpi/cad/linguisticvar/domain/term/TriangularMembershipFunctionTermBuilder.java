@@ -41,7 +41,7 @@ public class TriangularMembershipFunctionTermBuilder implements TermBuilder {
         return new TermBoundaries(left, middle, right);
     }
 
-    private double[] calculateMembershipFunctionValues(TermBoundaries termBoundaries) {
+    double[] calculateMembershipFunctionValues(TermBoundaries termBoundaries) {
         TriangularFunction membershipFunction =
                 new TriangularFunction(termBoundaries.left, termBoundaries.middle, termBoundaries.right);
 
@@ -55,7 +55,7 @@ public class TriangularMembershipFunctionTermBuilder implements TermBuilder {
     }
 
     @Data
-    private static class TermBoundaries {
+    static class TermBoundaries {
         private static final double OVERLAPPING_RATIO = 5./100;
 
         private int left;
