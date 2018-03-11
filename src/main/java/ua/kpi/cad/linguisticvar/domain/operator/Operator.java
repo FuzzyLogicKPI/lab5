@@ -7,6 +7,8 @@ public abstract class Operator {
 
     public abstract FuzzySet applyTo(FuzzySet... operands);
 
+    protected abstract void validate(FuzzySet... operands) throws IllegalArgumentException;
+
     public int getPriority() {
         return PRIORITY;
     }
