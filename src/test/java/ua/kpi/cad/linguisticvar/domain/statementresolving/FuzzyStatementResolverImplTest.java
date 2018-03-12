@@ -26,7 +26,7 @@ public class FuzzyStatementResolverImplTest {
     public void testResolving() {
         String statement = "толщина изделия слегка а или не очень б";
         LinguisticVariable variable =
-                variableCreator.create("толщина изделия", Arrays.asList("а","б"),100, 200);
+                variableCreator.create("толщина изделия", Arrays.asList("а","б", "в"),100, 200);
 
         FuzzySet fuzzySet = resolver.resolveStatementForVariable(statement, variable);
         System.out.println(fuzzySet);

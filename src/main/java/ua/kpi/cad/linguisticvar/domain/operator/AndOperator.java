@@ -16,7 +16,7 @@ public class AndOperator extends Operator {
 
         double[] mfValues = new double[leftOperand.getMembershipFunctionValues().length];
         for (int i = 0; i < leftOperand.getMembershipFunctionValues().length; i++) {
-            mfValues[i] = Math.max(leftOperand.getMembershipFunctionValues()[i], rightOperand.getMembershipFunctionValues()[i]);
+            mfValues[i] = Math.min(leftOperand.getMembershipFunctionValues()[i], rightOperand.getMembershipFunctionValues()[i]);
         }
 
         return new FuzzySet(mfValues);

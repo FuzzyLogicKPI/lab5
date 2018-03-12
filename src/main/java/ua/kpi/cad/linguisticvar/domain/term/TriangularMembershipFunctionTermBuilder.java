@@ -56,7 +56,7 @@ public class TriangularMembershipFunctionTermBuilder implements TermBuilder {
 
     @Data
     static class TermBoundaries {
-        private static final double OVERLAPPING_RATIO = 5./100;
+        private static final double OVERLAPPING_RATIO = 15./100;
 
         private int left;
         private int right;
