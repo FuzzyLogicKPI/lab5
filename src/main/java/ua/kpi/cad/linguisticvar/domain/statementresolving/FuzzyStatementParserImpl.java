@@ -13,6 +13,7 @@ public class FuzzyStatementParserImpl implements FuzzyStatementParser {
 
     @Inject
     private AvailableSyntaxDictionary dictionary;
+
     @Inject
     private OperatorsLookup operatorsLookup;
 
@@ -136,7 +137,7 @@ public class FuzzyStatementParserImpl implements FuzzyStatementParser {
         }
     }
 
-    private class StatementValidationException extends RuntimeException {
+    public static class StatementValidationException extends RuntimeException {
         public StatementValidationException(String message) {
             super(message);
         }

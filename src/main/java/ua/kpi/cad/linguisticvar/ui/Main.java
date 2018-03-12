@@ -19,7 +19,11 @@ public class Main extends Application {
         Parent root = fxmlLoader.load(getClass().getResourceAsStream(ROOT_FXML_FILE));
 
         primaryStage.setTitle("Linguistic variable assignment.");
-        primaryStage.setScene(new Scene(root));
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/styles/chart.css");
+        primaryStage.setScene(scene);
+
         primaryStage.setResizable(false);
         primaryStage.show();
     }

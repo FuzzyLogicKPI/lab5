@@ -38,7 +38,7 @@
         <TextArea layoutX="257.0" layoutY="115.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="68.0" prefWidth="200.0"
                   promptText="Терми" fx:id="terms"/>
         <Button layoutX="591.0" layoutY="544.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="67.0" text="Далі"
-                onAction="#goToCalculationScene"/>
+                onAction="#goToCalculationScene" visible="false" fx:id="nextBtn"/>
         <Button layoutX="574.0" layoutY="206.0" mnemonicParsing="false" text="Розрахувати"
                 onAction="#calculateMembershipFunc"/>
     </AnchorPane>

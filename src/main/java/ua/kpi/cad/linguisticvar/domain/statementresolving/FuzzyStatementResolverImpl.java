@@ -9,10 +9,12 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class FuzzyStatementResolverImpl implements FuzzyStatementResolver {
+
     @Inject
     private FuzzyStatementParser statementParser;
 
-    public FuzzyStatementResolverImpl() {}
+    public FuzzyStatementResolverImpl() {
+    }
 
     @Override
     public FuzzySet resolveStatementForVariable(String statement, LinguisticVariable linguisticVariable) {

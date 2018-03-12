@@ -9,17 +9,17 @@ import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementResolver
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementResolverImpl;
 
 public class ApplicationClassesFactory {
-    private static Injector injector = Guice.createInjector(new AppModule());
+    public static final Injector INJECTOR = Guice.createInjector(new AppModule());
 
     public static LinguisticVariableCreator getLinguisticVariableCreator() {
-        return injector.getInstance(LinguisticVariableCreator.class);
+        return INJECTOR.getInstance(LinguisticVariableCreator.class);
     }
 
     public static FuzzyStatementParser getFuzzyStatementParser() {
-        return injector.getInstance(FuzzyStatementParserImpl.class);
+        return INJECTOR.getInstance(FuzzyStatementParserImpl.class);
     }
 
     public static FuzzyStatementResolver getFuzzyStatementResolver() {
-        return injector.getInstance(FuzzyStatementResolverImpl.class);
+        return INJECTOR.getInstance(FuzzyStatementResolverImpl.class);
     }
 }

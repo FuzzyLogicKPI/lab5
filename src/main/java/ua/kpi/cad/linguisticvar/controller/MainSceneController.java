@@ -1,6 +1,7 @@
 package ua.kpi.cad.linguisticvar.controller;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ua.kpi.cad.linguisticvar.diconfig.ApplicationClassesFactory;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariableCreator;
@@ -28,6 +30,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class MainSceneController extends AbstractController implements Initializable {
     private static final String CALCULATION_SCENE_FXML = "/templates/calculation-scene.fxml";
 
@@ -52,16 +55,21 @@ public class MainSceneController extends AbstractController implements Initializ
     @FXML
     private NumberAxis yAxis;
 
+    @FXML
+    private Button nextBtn;
+
     @Getter
     private LinguisticVariable variable;
 
-    // TODO: should be injected.
-    private EventBus eventBus = new EventBus();
+    @Inject
+    private EventBus eventBus;
 
-    private LinguisticVariableCreator factory = ApplicationClassesFactory.getLinguisticVariableCreator();
+    @Inject
+    private LinguisticVariableCreator factory;
 
-    // TODO: next btn should be hidden while var is not calculated.
     public void initialize(URL location, ResourceBundle resources) {
+        ApplicationClassesFactory.INJECTOR.injectMembers(this);
+
         yAxis.setUpperBound(1);
         yAxis.setLowerBound(0);
         yAxis.setTickUnit(0.2);
@@ -80,7 +88,7 @@ public class MainSceneController extends AbstractController implements Initializ
 
         List<Term> terms = var.getTerms();
         List<XYChart.Series<Number, Number>> chartsData = terms.stream()
-                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval()))
+                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval(), term.getName()))
                 .collect(Collectors.toList());
 
 
@@ -88,6 +96,7 @@ public class MainSceneController extends AbstractController implements Initializ
         data.addAll(chartsData);
 
         memberShipFuncVisualization.setData(data);
+        nextBtn.setVisible(true);
     }
 
     @FXML
@@ -103,7 +112,7 @@ public class MainSceneController extends AbstractController implements Initializ
             Stage stage = ((Stage) ((Button) event.getSource()).getScene().getWindow());
             stage.setScene(scene);
         } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+            log.error("Error: " + e.getMessage());
             System.exit(-1);
         }
     }
@@ -131,14 +140,5 @@ public class MainSceneController extends AbstractController implements Initializ
             alert.showAndWait();
             return null;
         }
-    }
-
-    private Alert getWarningAlert(String headerMsg, String contentMsg) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(headerMsg);
-        alert.setHeaderText(headerMsg);
-        alert.setContentText(contentMsg);
-
-        return alert;
     }
 }
