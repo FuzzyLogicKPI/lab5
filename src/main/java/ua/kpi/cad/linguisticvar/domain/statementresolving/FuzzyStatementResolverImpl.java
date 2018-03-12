@@ -28,7 +28,7 @@ public class FuzzyStatementResolverImpl implements FuzzyStatementResolver {
             StatementUnit currentUnit = statement.getNextUnit();
             switch (currentUnit.getType()) {
                 case OPERAND:
-                    operandStack.add((FuzzySet) currentUnit);
+                    operandStack.push((FuzzySet) currentUnit);
                     break;
                 case OPERATOR:
                     handleOperator((Operator) currentUnit, operandStack);
