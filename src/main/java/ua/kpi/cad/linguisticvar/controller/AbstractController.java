@@ -1,5 +1,6 @@
 package ua.kpi.cad.linguisticvar.controller;
 
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import ua.kpi.cad.linguisticvar.domain.Interval;
@@ -33,5 +34,15 @@ public abstract class AbstractController {
         alert.setContentText(contentMsg);
 
         return alert;
+    }
+
+    protected void initializeChartAxis(NumberAxis axis, Interval interval, double tickUnit, boolean isAutoRanging) {
+        if (tickUnit > 0.0) {
+            axis.setTickUnit(tickUnit);
+        }
+
+        axis.setLowerBound(interval.getLeftBoundary());
+        axis.setUpperBound(interval.getRightBoundary());
+        axis.setAutoRanging(isAutoRanging);
     }
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ua.kpi.cad.linguisticvar.diconfig.ApplicationClassesFactory;
 import ua.kpi.cad.linguisticvar.domain.FuzzySet;
+import ua.kpi.cad.linguisticvar.domain.Interval;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementParserImpl.StatementValidationException;
 import ua.kpi.cad.linguisticvar.domain.statementresolving.FuzzyStatementResolver;
@@ -50,12 +51,17 @@ public class CalculationSceneController extends AbstractController implements In
     public void initialize(URL location, ResourceBundle resources) {
         this.resolver = new FuzzyStatementResolverImpl();
         ApplicationClassesFactory.INJECTOR.injectMembers(this);
+
         operationVisualization.setLegendVisible(false);
+
+        initializeChartAxis(yAxis, new Interval(0.0, 1.0), 0.2, false);
     }
 
     @Subscribe
     public void setLinguisticVariable(LinguisticVariable variable) {
         this.variable = variable;
+
+        initializeChartAxis(xAxis, variable.getInterval(), 0.0, false);
     }
 
     @FXML

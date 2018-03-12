@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ua.kpi.cad.linguisticvar.diconfig.ApplicationClassesFactory;
+import ua.kpi.cad.linguisticvar.domain.Interval;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariable;
 import ua.kpi.cad.linguisticvar.domain.LinguisticVariableCreator;
 import ua.kpi.cad.linguisticvar.domain.term.Term;
@@ -70,10 +71,7 @@ public class MainSceneController extends AbstractController implements Initializ
     public void initialize(URL location, ResourceBundle resources) {
         ApplicationClassesFactory.INJECTOR.injectMembers(this);
 
-        yAxis.setUpperBound(1);
-        yAxis.setLowerBound(0);
-        yAxis.setTickUnit(0.2);
-        yAxis.setAutoRanging(false);
+        initializeChartAxis(yAxis, new Interval(0.0, 1.0), 0.2, false);
     }
 
     // TODO: set styles for a line chart.
@@ -81,14 +79,12 @@ public class MainSceneController extends AbstractController implements Initializ
     protected void calculateMembershipFunc(ActionEvent event) {
         LinguisticVariable var = parseLinguisticVariable();
         this.variable = var;
-
-        xAxis.setLowerBound(var.getInterval().getLeftBoundary());
-        xAxis.setUpperBound(var.getInterval().getRightBoundary());
-        xAxis.setAutoRanging(false);
+        initializeChartAxis(xAxis, var.getInterval(), 0.0, false);
 
         List<Term> terms = var.getTerms();
         List<XYChart.Series<Number, Number>> chartsData = terms.stream()
-                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(), var.getInterval(), term.getName()))
+                .map(term -> convertMFValuesToChartSeries(term.getFuzzySet().getMembershipFunctionValues(),
+                        var.getInterval(), term.getName()))
                 .collect(Collectors.toList());
 
 
